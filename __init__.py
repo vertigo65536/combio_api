@@ -20,17 +20,17 @@ def search(search):
             'sec-fetch-site': 'same-origin',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
         })
-    try:
-        markup = json.loads(r.text[1:])
-    except JSONDecodeError:
-        return -1
+    markup = json.loads(r.text[1:])
     href = []
     resultsMarkup = markup['payload']['markup']
     for i in range(len(resultsMarkup)):
         soup = BeautifulSoup(resultsMarkup[i], features='html.parser')
         for link in soup.findAll('a'):
             href.append([link.text, link.get('href'), link.get('src')])
-    return href
+    if href == []:
+        return -1
+    else:
+        return href
 
 def getDefaultTimestamps(url):
     largeID = url.split('/')[2]
