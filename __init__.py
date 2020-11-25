@@ -59,15 +59,19 @@ def getAllTimestamps(url):
     
     ##retrieve video start and finish time stamps
     page = requests.get('https://comb.io' + url)
-    soup = BeautifulSoup(page.text, features='html.parser')
-    soup = soup.find(id="s")
     ts = []
-    for timestampBlock in soup.findAll("div", {"class": "timeline-clip"}):
-        tsBlockFormatted = dict()
-        soup2 = BeautifulSoup(str(timestampBlock), features='html.parser')
-        for tsInputString in soup2.findAll('input'):
-            tsBlockFormatted[tsInputString['name']] = tsInputString['value']
-        ts.append(tsBlockFormatted)
+    ids = ["b", "s", "a"]
+    for i in range(len(ids)):
+        soup = BeautifulSoup(page.text, features='html.parser')
+        soup = soup.find(id=ids[i])
+        for timestampBlock in soup.findAll("div", {"class": "timeline-clip"}):
+            tsBlockFormatted = dict()
+            soup2 = BeautifulSoup(str(timestampBlock), features='html.parser')
+            print("1")
+            for tsInputString in soup2.findAll('input'):
+                print("2")
+                tsBlockFormatted[tsInputString['name']] = tsInputString['value']
+            ts.append(tsBlockFormatted)
         
     return ts
     
