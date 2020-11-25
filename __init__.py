@@ -67,9 +67,7 @@ def getAllTimestamps(url):
         for timestampBlock in soup.findAll("div", {"class": "timeline-clip"}):
             tsBlockFormatted = dict()
             soup2 = BeautifulSoup(str(timestampBlock), features='html.parser')
-            print("1")
             for tsInputString in soup2.findAll('input'):
-                print("2")
                 tsBlockFormatted[tsInputString['name']] = tsInputString['value']
             ts.append(tsBlockFormatted)
         
