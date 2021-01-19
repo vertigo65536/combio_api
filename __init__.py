@@ -2,6 +2,8 @@ import requests
 import json
 from bs4 import BeautifulSoup
 
+timeout = 10
+
 def search(search):
     r = requests.post(
         url='https://comb.io/a/q',
@@ -19,7 +21,9 @@ def search(search):
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
-        })
+        },
+        timeout=timeout
+        )
     markup = json.loads(r.text[1:])
     href = []
     resultsMarkup = markup['payload']['markup']
@@ -38,7 +42,7 @@ def getDefaultTimestamps(url):
     timestamp = largeID.split('?')[1][4:]
     
     ##retrieve video start and finish time stamps
-    page = requests.get('https://comb.io' + url)
+    page = requests.get('https://comb.io' + url, timeout=timeout)
     soup = BeautifulSoup(page.text, features='html.parser')
     soup = soup.find(id="s")
     ts = []
@@ -58,7 +62,7 @@ def getAllTimestamps(url):
     timestamp = largeID.split('?')[1][4:]
     
     ##retrieve video start and finish time stamps
-    page = requests.get('https://comb.io' + url)
+    page = requests.get('https://comb.io' + url, timeout=timeout)
     ts = []
     ids = ["b", "s", "a"]
     for i in range(len(ids)):
@@ -96,7 +100,8 @@ def getVideoUrl(url, timestamps):
             'sec-fetch-mode': 'navigate',
             'sec-fetch-site': 'same-origin',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
-        })
+        },
+        timeout=timeout)
     soup = BeautifulSoup(r.text, features='html.parser')
     for link in soup.findAll('source'):
         href = link.get('src')
