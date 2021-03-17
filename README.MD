@@ -13,5 +13,5 @@ Takes a url returned by search, and returns a dictionary containing the default 
 ### getAllTimestamps(url)
 Takes a url returned by search, and returns an array of dictionary containing all possible start and end time stamps that are selectable
 
-### getVideoUrl(url, timestamps)
-Takes the url returned by search, and dictionary formatted the same as getDefaultTimestamps returns containing start and end timestamps, and returns a generated video url
+### getVideoData(url, timestamps)
+Takes the url returned by search, and dictionary formatted the same as getDefaultTimestamps returns containing start and end timestamps, and returns a dictionary containing 'link', 'show', 'episode', 'views' and 'quote'
