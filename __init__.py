@@ -78,7 +78,7 @@ def getAllTimestamps(url):
     return ts
     
     
-def getVideoUrl(url, timestamps):
+def getVideoData(url, timestamps):
     if len(timestamps) != 2:
        return -1
     largeID = url.split('/')[2]
@@ -103,7 +103,20 @@ def getVideoUrl(url, timestamps):
         },
         timeout=timeout)
     soup = BeautifulSoup(r.text, features='html.parser')
+    output = {}
     for link in soup.findAll('source'):
         href = link.get('src')
-    
-    return href
+        output['link'] = href
+    dataName = ['show', 'episode', 'views', 'quote']
+    i = 0
+    for wrapper in soup.findAll(attrs={'class': 'container'}):
+        for dataBlock in wrapper.findAll(attrs={'style': 'float:left;'}):
+            for metaData in dataBlock.findAll('div'):
+                if i > len(dataName):
+                    break
+                if i == 2:
+                    output[dataName[i]] = metaData.getText().replace('Views: ', '')
+                else:
+                    output[dataName[i]] = metaData.getText()
+                i += 1
+    return output
